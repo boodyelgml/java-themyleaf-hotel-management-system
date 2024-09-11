@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>sweet details</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+            <div class="container mt-5">
+                <div class="row text-right">
+        
+                    <div class="col-md-12 text-right mb-3">
+                        <a class="btn btn-danger"
+                            th:href="@{/sessionExit/{sessionId}(sessionId=${room.session.id})}">
+                            خروج
+                        </a>
+                    </div>
+        
+                    <!-- Room Card -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">الغرفة</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>اسم الغرفة:</strong> <span th:text="${room.name}"></span><br>
+                                    <strong>وصف الغرفة:</strong> <span th:text="${room.description}"></span><br>
+                                    <!-- Add other room properties you want to display -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Guest Card -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">الضيف</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>اسم الضيف:</strong> <span th:text="${guest.name}"></span><br>
+                                    <strong>الرقم القومي:</strong> <span th:text="${guest.nationalId}"></span><br>
+                                    <strong>رقم الهاتف:</strong> <span th:text="${guest.mobileNumber}"></span><br>
+                                    <strong>البريد الإلكتروني:</strong> <span th:text="${guest.email}"></span><br>
+                                    <strong>الحالة الاجتماعية:</strong> <span th:text="${guest.maritalStatus}"></span><br>
+                                    <strong>العمر:</strong> <span th:text="${guest.age}"></span><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Session Card -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">الجلسة</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>رقم الجلسة:</strong> <span th:text="${room.session.id}"></span><br>
+                                    <strong>بدأت في:</strong> <span th:text="${room.session.startedAt}"></span><br>
+                                    <strong>انتهت في:</strong> <span th:text="${room.session.endedAt}"></span><br>
+                                    <strong>التفاصيل:</strong> <span th:text="${room.session.details}"></span><br>
+                                    <strong>الحفظ:</strong> <span th:text="${room.session.saves}"></span><br>
+                                    <strong>المبلغ المستحق:</strong> <span th:text="${room.session.dueAmount}"></span><br>
+                                    <strong>المبلغ المدفوع مقدمًا:</strong> <span
+                                        th:text="${room.session.inAdvanceAmount}"></span><br>
+                                    <strong>المبلغ المتبقي:</strong> <span
+                                        th:text="${room.session.remainsAmount}"></span><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    <script layout:fragment="custom-scripts">
+        $(document).ready(function () {
+
+        });
+    </script>
+</body>
+
+</html>

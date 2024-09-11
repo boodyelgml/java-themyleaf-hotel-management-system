@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>sweet details</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+            <div class="card">
+                <div class="card-body">
+                    <table id="sweetTable" class="table table-striped table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Guest Name</th>
+                                <th>Mobile Number</th>
+                                <th>Email</th>
+                                <th>National ID</th>
+                                <th>Marital Status</th>
+                                <th>Age</th>
+                                <th>Room name</th>
+                                <th>Started At</th>
+                                <th>Ended At</th>
+                                <th>Due Amount</th>
+                                <th>In Advance Amount</th>
+                                <th>Remains Amount</th>
+                                <th>Is Ended</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="ses : ${sessions}">
+                                <td th:text="${ses.id}"></td>
+                                <td th:text="${ses.guest.name}"></td>
+                                <td th:text="${ses.guest.mobileNumber}"></td>
+                                <td th:text="${ses.guest.email}"></td>
+                                <td th:text="${ses.guest.nationalId}"></td>
+                                <td th:text="${ses.guest.maritalStatus}"></td>
+                                <td th:text="${ses.guest.age}"></td>
+                                <td th:text="${ses.room.name}"></td>
+                                <td th:text="${ses.startedAt}"></td>
+                                <td th:text="${ses.endedAt}"></td>
+                                <td th:text="${ses.dueAmount}"></td>
+                                <td th:text="${ses.inAdvanceAmount}"></td>
+                                <td th:text="${ses.remainsAmount}"></td>
+                                <td th:text="${ses.isEnded}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script layout:fragment="custom-scripts">
+        $(document).ready(function () {
+            $('#sweetTable').DataTable({
+                "order": [0]
+            });
+        });
+
+        
+    </script>
+</body>
+
+</html>

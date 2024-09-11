@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>sweet details</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container mt-3">
+                        <h2>Session List</h2>
+ 
+                        <ul class="list-group">
+                            <li th:each="ses : ${sessions}" class="list-group-item">
+                                <!-- Display room information -->
+                                <div>
+                                    <strong>Room Name:</strong> <span th:text="${ses.room.name}"></span>
+                                </div>
+                                <div>
+                                    <strong>Session ID:</strong> <span th:text="${ses.id}"></span>
+                                </div>
+                                <div>
+                                    <strong>Guest Name:</strong> <span th:text="${ses.guest.name}"></span>
+                                </div>
+                                <div>
+                                    <strong>Guest national Id:</strong> <span th:text="${ses.guest.nationalId}"></span>
+                                </div>
+                                <div>
+                                    <strong>Started At:</strong> <span th:text="${ses.startedAt}"></span>
+                                </div>
+                                <div>
+                                    <strong>Ended At:</strong> <span th:text="${ses.endedAt}"></span>
+                                </div>
+                                <div>
+                                    <strong>Due Amount:</strong> <span th:text="${ses.dueAmount}"></span>
+                                </div>
+                                <div>
+                                    <strong>Due Amount:</strong> <span th:text="${ses.dueAmount}"></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script layout:fragment="custom-scripts">
+        $(document).ready(function () {
+            $('#sweetTable').DataTable();
+        });
+    </script>
+</body>
+
+</html>

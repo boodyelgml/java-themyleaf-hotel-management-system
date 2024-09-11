@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>sweet details</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="container mt-5">
+                        <div class="row">
+
+                            <div class="col-md-12 text-right mb-3">
+
+                                <form th:object="${session}" id="updateAmounts" th:action="@{/updateAmounts}"
+                                    method="post">
+
+                                    <input type="hidden" id="sessionId" name="sessionId" th:field="*{id}" />
+
+
+                                    <div class="form-group">
+                                        <label for="dueAmount">المبلغ المستحق</label>
+                                        <input type="text" class="form-control text-right" id="dueAmount"
+                                            th:field="*{dueAmount}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inAdvanceAmount">المبلغ المدفوع مقدمًا</label>
+                                        <input type="text" class="form-control text-right" id="inAdvanceAmount"
+                                            th:field="*{inAdvanceAmount}" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="discountAmount">مبلغ الخصم</label>
+                                        <input type="text" class="form-control text-right" id="discountAmount"
+                                            th:field="*{discountAmount}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="returnedAmount">المبلغ المرتجع</label>
+                                        <input type="text" class="form-control text-right" id="returnedAmount"
+                                            th:field="*{returnedAmount}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="paidAmount">المبلغ المدفوع</label>
+                                        <input type="text" class="form-control text-right" id="paidAmount"
+                                            th:field="*{paidAmount}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="remainsAmount">المبلغ المتبقي</label>
+                                        <input type="text" class="form-control text-right" id="remainsAmount"
+                                            th:field="*{remainsAmount}" readonly>
+                                    </div>
+
+                                    <button type="button" class="confirm btn btn-success" disabled>تأكيد</button>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script layout:fragment="custom-scripts">
+        $(document).ready(function () {
+
+            
+            // Parse the input values as floats to ensure numeric calculations
+            var dueAmount = parseFloat($("#dueAmount").val()) || 0;
+            var discountAmount = parseFloat($("#discountAmount").val()) || 0;
+            var inAdvanceAmount = parseFloat($("#inAdvanceAmount").val()) || 0;
+            var paidAmount = parseFloat($("#paidAmount").val()) || 0;
+            var returnedAmount = parseFloat($("#returnedAmount").val()) || 0;
+
+
+            var remainsAmount = dueAmount - discountAmount - inAdvanceAmount - paidAmount + returnedAmount;
+            $("#remainsAmount").val(remainsAmount);
+
+            $('.confirm').prop("disabled", true)
+
+            if ($("#remainsAmount").val() != 0) {
+                $('.confirm').prop("disabled", true)
+            } else {
+                $('.confirm').prop("disabled", false)
+            }
+
+            $('form input').on("keyup", function () {
+                // Parse the input values as floats to ensure numeric calculations
+                var dueAmount = parseFloat($("#dueAmount").val()) || 0;
+                var discountAmount = parseFloat($("#discountAmount").val()) || 0;
+                var inAdvanceAmount = parseFloat($("#inAdvanceAmount").val()) || 0;
+                var paidAmount = parseFloat($("#paidAmount").val()) || 0;
+                var returnedAmount = parseFloat($("#returnedAmount").val()) || 0;
+                var remainsAmount = dueAmount - discountAmount - inAdvanceAmount - paidAmount + returnedAmount;
+                $("#remainsAmount").val(remainsAmount);
+
+                if ($("#remainsAmount").val() != 0) {
+                    $('.confirm').prop("disabled", true)
+                } else {
+                    $('.confirm').prop("disabled", false)
+                }
+            }) 
+
+            $(".confirm").on("click", function () {
+                var formData = new FormData($('#updateAmounts')[0]);
+                formData.forEach(function (value, key) {
+                    console.log(key, value);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/sessionExit",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (response) {
+                        if (response) {
+                            location.replace("../home")
+                        } else {
+                            alert("error")
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

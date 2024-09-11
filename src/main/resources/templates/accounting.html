@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>Accounting details</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+            <div class="card">
+                <div class="card-header">
+                    Accounting details
+                </div>
+                <div class="card-body">
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-md-12 text-right mb-3">
+
+                                <form id="searchForm" action="/your-action-endpoint" method="post" th:object="${yourFormObject}">
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <!-- MultiSelect Dropdown -->
+                                                <div class="form-group">
+                                                    <label for="selectOptions">Select Options:</label>
+                                                    <select id="selectOptions" name="rooms"
+                                                        class="form-control" multiple="multiple">
+                                                        <option th:each="option : ${roomList}" th:value="${option.id}"
+                                                            th:text="${option.name}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <!-- From Date -->
+                                                <div class="form-group">
+                                                    <label for="fromDate">From Date:</label>
+                                                    <input type="date" id="fromDate" name="fromDate"
+                                                        class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <!-- To Date -->
+                                                <div class="form-group">
+                                                    <label for="toDate">To Date:</label>
+                                                    <input type="date" id="toDate" name="toDate" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Submit Button -->
+                                    <button type="button" class="submitBtn btn btn-primary">Submit</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script layout:fragment="custom-scripts">
+        $(document).ready(function () {
+            $(".submitBtn").on("click", function () {
+                var formData = new FormData($('#searchForm')[0]);
+                formData.forEach(function (value, key) {
+                    console.log(key, value);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "/accountingResponse",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (response) {
+                        console.log(response)
+                        if (response) {
+                            alert("done")
+                        }
+                    },
+                    error: function (error) {
+                        alert("failed")
+                    },
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

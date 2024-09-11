@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Club List</title>
+    <style>
+        .sweet-container {
+            direction: rtl;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sweet {
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .room-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .room {
+            width: 24%;
+            margin: auto;
+            border: 1px solid #ccc;
+            text-align: center;
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .booked {
+            background-color: #908778;
+            color: white;
+        }
+
+        .free {
+            background-color: #0f4c81;
+            color: white;
+        }
+
+        .details-btn {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: black;
+        }
+
+        .alert-dark {
+            color: #ffffff;
+            background-color: #0000008f;
+            border-color: #0000008f;
+            margin-bottom: -4px;
+            margin: -4px 10px;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section layout:fragment="content" class="py-1">
+            <div class="sweet-container">
+                <div th:each="sweet : ${sweets}" class="sweet">
+                    <div class="alert alert-dark text-center" th:text="${sweet.name}"></div>
+                    <div class="room-container">
+                        <div th:each="room : ${sweet.roomList}"
+                            th:class="${room.isAvailable} ? 'free mt-2 room' : 'booked mt-2 room'">
+                            <h2 th:text="${room.name}" class="w-100 text-center font-weight-bold"></h2>
+
+                            <div th:if="${room.isAvailable}" class="w-100 text-center">
+                                <h2 style="color: mediumseagreen;">
+                                    الغرفة متاحة
+
+                                </h2>
+                            </div>
+
+                            <div th:if="${!room.isAvailable}" class="text-right">
+                                <h5 class="mb-3"> <span class="font-weight-bold"
+                                        style="color:#385472; font-size:16px">اسم
+                                        الضيف : </span><span th:text="${room.guest.name}"></span> </h5>
+                                <h6> <span class="font-weight-bold" style="color:#385472; font-size:16px">وقت الدخول :
+                                    </span><span th:text="${room.session.startedAt}"></span> </h6>
+                                <h6> <span class="font-weight-bold" style="color:#385472; font-size:16px">وقت الخروج :
+                                    </span><span th:text="${room.session.endedAt}"></span> </h6>
+                                <!-- <h6> <span class="font-weight-bold" style="color:#385472; font-size:16px">المبلغ المستحق :
+                                    </span><span th:text="${room.session.dueAmount}"></span> جنية </h6>
+                                <h6> <span class="font-weight-bold" style="color:#385472; font-size:16px">المبلغ المدفوع
+                                        مُقدمًا : </span><span th:text="${room.session.inAdvanceAmount}"></span> جنية
+                                </h6>
+                                <h6><span class="font-weight-bold" style="color:#385472; font-size:16px">المبلغ المتبقي :
+                                    </span><span th:text="${room.session.remainsAmount}"></span> جنية </h6> -->
+                            </div>
+
+                            <div>
+                                <a th:if="${room.isAvailable}" class="btn btn-secondary btn-sm"
+                                    th:href="@{/newSession/{roomId}(roomId=${room.id})}"> دخول نزيل </a>
+                                <a th:if="${!room.isAvailable}"
+                                    th:href="@{/sessionInfo/{roomId}/{sessionId}(roomId=${room.id},sessionId=${room.session.id})}"
+                                    class="btn btn-sm exitButton"
+                                    style="background-color: #334c67; border-color: #334c67; color: white;">خروج
+                                    نزيل</a>
+
+                                <a class="btn details-btn btn-sm"
+                                    th:href="@{/roomDetails/{roomId}(roomId=${room.id})}">سجل الغرفة</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script layout:fragment="custom-scripts">
+
+    </script>
+</body>
+
+</html>
